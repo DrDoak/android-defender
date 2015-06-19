@@ -1,0 +1,35 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+android:layout_height="match_parent" android:paddingLeft="0dp"
+android:paddingRight="0dp"
+android:paddingTop="0dp"
+android:paddingBottom="0dp"
+tools:context="com.unorthwestern.luoleizhao2018.defender.PreviewActivity$PlaceholderFragment">
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Use Different Coordinates"
+    android:id="@+id/button4"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:onClick="returnToMain"/>
+
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Use This Layout"
+    android:id="@+id/button5"
+    android:layout_alignTop="@+id/button4"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:onClick="startGame"/>
+
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:id="@+id/map" tools:context=".MapsActivity"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    xmlns:map="http://schemas.android.com/apk/res-auto"/>
+
+</RelativeLayout>
