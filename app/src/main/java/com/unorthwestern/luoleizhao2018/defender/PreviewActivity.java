@@ -3,12 +3,14 @@ package com.unorthwestern.luoleizhao2018.defender;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.location.Location;
 import android.provider.SyncStateContract;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,6 +74,7 @@ public class PreviewActivity extends FragmentActivity {
     public double[] xCoordinates = new double[25];
     public double[] yCoordinates = new double[25];
     int currentIndex;
+    private boolean done;
     private String backgroundPath;
     public Activity myActivity = this;
     private static final ScheduledExecutorService worker =
@@ -80,7 +83,7 @@ public class PreviewActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        done = false;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -168,6 +171,7 @@ public class PreviewActivity extends FragmentActivity {
     }
 
     public void startGame(View view) {
+        done = true;
         if(placeMarkers!=null){
             for(int pm=0; pm<placeMarkers.length; pm++){
                 if(placeMarkers[pm]!=null)
@@ -205,6 +209,9 @@ public class PreviewActivity extends FragmentActivity {
         worker.schedule(task, 100, TimeUnit.MILLISECONDS);
     }
     private void prepareLocations() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
         LatLngBounds bounds = mMap.getProjection().getVisibleRegion().latLngBounds;
         LatLng NE = bounds.northeast;
         LatLng SW = bounds.southwest;
@@ -215,8 +222,8 @@ public class PreviewActivity extends FragmentActivity {
             if (xCoordinates[i] != 0) {
                 xCoordinates[i] = Math.abs(xCoordinates[i] - SW.longitude);
                 yCoordinates[i] = Math.abs(yCoordinates[i] - NE.latitude);
-                xCoordinates[i] = ((xCoordinates[i] * 1280) / xMax);
-                yCoordinates[i] = ((yCoordinates[i] * 960) / yMax);
+                xCoordinates[i] = ((xCoordinates[i] * size.x) / xMax);
+                yCoordinates[i] = ((yCoordinates[i] * size.y) / yMax);
             }
         }
     }
@@ -249,6 +256,12 @@ public class PreviewActivity extends FragmentActivity {
         }
 
         protected void onPostExecute(String result) {
+            int wasteTime;
+            if (done) {
+                wasteTime = 10;
+                return;
+            } else
+                wasteTime = 5;
             if(placeMarkers!=null){
                 for(int pm=0; pm<placeMarkers.length; pm++){
                     if(placeMarkers[pm]!=null)
@@ -338,10 +351,8 @@ public class PreviewActivity extends FragmentActivity {
                 }
                 if (venueType != null) {
                     LatLngBounds bounds = b.build();
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 25);
+                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 64);
                     mMap.animateCamera(cu);
-                } else {
-                    int wasteTime = 5;
                 }
             }
         }

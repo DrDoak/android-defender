@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.view.Display;
 
 import com.luoleizhao2018.frame.Game;
 import com.luoleizhao2018.frame.Graphics;
@@ -63,7 +65,12 @@ public class GameScreen extends Screen {
         //Assets.background = g.newImage("map_background.png",Graphics.ImageFormat.RGB565);
         String path = ((MainGame)game).backgroundPath;
         Bitmap bitmap1 = BitmapFactory.decodeFile(path);
-        AndroidImage bkground = new AndroidImage(bitmap1, Graphics.ImageFormat.RGB565);
+        Display display = ((MainGame)game).getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap1, size.x,
+                size.y, false);
+        AndroidImage bkground = new AndroidImage(newBitmap, Graphics.ImageFormat.RGB565);
         Assets.player = g.newImage("player_basic.png", Graphics.ImageFormat.RGB565);
         Assets.background = bkground;
         Assets.enMid = g.newImage("enemy_mid.png", Graphics.ImageFormat.RGB565);
@@ -90,6 +97,7 @@ public class GameScreen extends Screen {
     }
 
     public void initializeVenues(Game game) {
+
         String[] typelist = ((MainGame)game).types;
         double[] xCoord = ((MainGame)game).xCoordinates;
         double[] yCoord = ((MainGame)game).yCoordinates;
@@ -268,7 +276,7 @@ public class GameScreen extends Screen {
         // First draw the game elements.
 
         // Draw background
-        g.drawImage(Assets.background,16, 16);
+        g.drawImage(Assets.background,0, 0);
 
         //draw Player
         g.drawImage(Assets.player, ((int)currentPlayer.x),((int)currentPlayer.y));
@@ -328,7 +336,7 @@ public class GameScreen extends Screen {
                 700, 100, paint);
         g.drawString("Lives Left: " + livesLeft,
                 700, 50, paint);
-        g.drawString("Pwr: " + Double.toString(currentPlayer.statPower) +
+        g.drawString("Pwr: " + Double.toString((int)currentPlayer.statPower) +
                 "  Rng: " + Double.toString((int)currentPlayer.statRange) +
                 "  Spd: " + Double.toString((int)currentPlayer.statSpeed) +
                 "  Int: " + Double.toString((int)currentPlayer.statInt) +

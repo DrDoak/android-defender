@@ -11,10 +11,10 @@ tools:context="com.unorthwestern.luoleizhao2018.defender.PreviewActivity$Placeho
     android:layout_height="wrap_content"
     android:text="Use Different Coordinates"
     android:id="@+id/button4"
+    android:onClick="returnToMain"
     android:layout_alignParentBottom="true"
     android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true"
-    android:onClick="returnToMain"/>
+    android:layout_alignParentEnd="true" />
 
 <Button
     android:layout_width="wrap_content"
@@ -29,7 +29,6 @@ tools:context="com.unorthwestern.luoleizhao2018.defender.PreviewActivity$Placeho
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:id="@+id/map" tools:context=".MapsActivity"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
-    xmlns:map="http://schemas.android.com/apk/res-auto"/>
+    android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
 </RelativeLayout>
